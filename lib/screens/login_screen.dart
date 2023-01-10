@@ -31,6 +31,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 //Do something with the user input.
               },
               decoration: const InputDecoration(
+                hintStyle: TextStyle(
+                  color: Colors.black
+                ),
                 hintText: 'Enter your email',
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),

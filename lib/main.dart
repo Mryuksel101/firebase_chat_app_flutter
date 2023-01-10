@@ -17,7 +17,10 @@ class FlashChat extends StatelessWidget {
         textTheme: const TextTheme(
           bodyMedium: TextStyle(
             color: Colors.black
-          )
+          ),
+
+          
+
         ),
       ),
 
