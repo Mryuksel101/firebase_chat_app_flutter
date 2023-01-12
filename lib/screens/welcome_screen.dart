@@ -52,51 +52,56 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             const SizedBox(
               height: 48.0,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                elevation: 5.0,
-                color: Colors.lightBlueAccent,
-                borderRadius: BorderRadius.circular(30.0),
-                child: MaterialButton(
-                  onPressed: () {
-                    //Go to login screen.
-                    Navigator.pushNamed(
-                      context,
-                      LoginScreen.id
-                    );
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: const Text(
-                    'Log In',
-                  ),
-                ),
-              ),
+            RoundedButton(
+              Colors.lightBlueAccent,
+              (){
+                Navigator.pushNamed(
+                  context,
+                  LoginScreen.id
+                );
+              },
+
+              const Text("Log In")
+
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(30.0),
-                elevation: 5.0,
-                child: MaterialButton(
-                  onPressed: () {
-                    //Go to registration screen.
-                    Navigator.pushNamed(
-                      context,
-                      RegistrationScreen.id
-                    );
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: const Text(
-                    'Register',
-                  ),
-                ),
+
+            RoundedButton(
+              Colors.blueAccent,
+              () { 
+                Navigator.pushNamed(
+                  context,
+                  RegistrationScreen.id
+                );
+              },
+               const Text(
+                'Register',
               ),
-            ),
+            )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class RoundedButton extends StatelessWidget {
+  Color color;
+  Text text;
+  VoidCallback function;
+  RoundedButton(this.color, this.function, this.text);
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      child: Material(
+        elevation: 5.0,
+        color: color,
+        borderRadius: BorderRadius.circular(30.0),
+        child: MaterialButton(
+          onPressed: function,
+          minWidth: 200.0,
+          height: 42.0,
+          child: text
         ),
       ),
     );
