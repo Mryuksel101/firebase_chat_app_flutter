@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_chat_app/screens/login_screen.dart';
 import 'package:firebase_chat_app/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
+    debugPrint("wecome screen widget buildi");
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -30,12 +32,20 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: Image.asset('images/logo.png'),
                   ),
                 ),
-                const Text(
-                  'Flash Chat',
-                  style: TextStyle(
-                    fontSize: 45.0,
-                    fontWeight: FontWeight.w900,
-                  ),
+                AnimatedTextKit(
+                  repeatForever: true,
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      "Flash Chat",
+                      textStyle: const TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.w900,
+                      ),
+                      speed: const Duration(
+                        milliseconds: 100
+                      )
+                    )
+                  ],
                 ),
               ],
             ),
