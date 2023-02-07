@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "392445286578",
+    "project_id": "flash-chat-123dd",
+    "storage_bucket": "flash-chat-123dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392445286578:android:f75828f7ddfebc2da351ab",
+        "android_client_info": {
+          "package_name": "com.mryuksel.firebase_chat_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "392445286578-iplt6s5nj0lvh1i7vns161i4u3m0lh11.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeXsbwJLDA4TYvyfQjelIRRJYixZ9XwuE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "392445286578-iplt6s5nj0lvh1i7vns161i4u3m0lh11.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
