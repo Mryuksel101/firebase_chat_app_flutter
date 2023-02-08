@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat_app/components/rounded_button.dart';
 import 'package:firebase_chat_app/constants.dart';
+import 'package:firebase_chat_app/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -49,7 +50,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 textAlign: TextAlign.center,
                 onChanged: (value) {
                   //Do something with the user input.
-                  eMail = value;
+                  eMail = value.trim();
                 },
                 decoration: kInputDecoration.copyWith(
                   hintText: "Enter your e-mail"
@@ -65,7 +66,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
                 obscureText: true,
                 onChanged: (value) {
-                  password = value;
+                  password = value.trim();
                   //Do something with the user input.
                 },
                 decoration: kInputDecoration.copyWith(
@@ -85,13 +86,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       final user = await _auth.createUserWithEmailAndPassword(
                       email: eMail,
                       password: password
+                    ).then(
+                      (value) => Navigator.pushNamed(
+                        context,
+                        ChatScreen.id,
+                      )
                     );
-
-                    
-
-                    log(user.additionalUserInfo.toString());
-                    log(user.credential.toString());
-                    log(user.credential.toString());
                     
                   }
                   catch(e){

@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat_app/constants.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 
@@ -11,6 +15,20 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final _auth =  FirebaseAuth.instance;
+  late User? loggedInUser;
+  void getCurrentUser(){
+   loggedInUser = _auth.currentUser;
+   log(loggedInUser!.uid.toString());
+   log(loggedInUser!.email.toString());
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCurrentUser();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +65,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   TextButton(
                     onPressed: () {
                       //Implement send functionality.
+                      getCurrentUser();
                     },
                     child: const Text(
                       'Send',
