@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat_app/components/rounded_button.dart';
 import 'package:firebase_chat_app/constants.dart';
@@ -12,6 +14,8 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  String eMail = "";
+  String password = "";
   final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
@@ -24,8 +28,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Expanded(
-                child: const Hero(
+              const Expanded(
+                child: Hero(
                   tag: "logo",
                   child: SizedBox(
                     height: 200.0,
@@ -45,6 +49,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 textAlign: TextAlign.center,
                 onChanged: (value) {
                   //Do something with the user input.
+                  eMail = value;
                 },
                 decoration: kInputDecoration.copyWith(
                   hintText: "Enter your e-mail"
@@ -60,6 +65,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
                 obscureText: true,
                 onChanged: (value) {
+                  password = value;
                   //Do something with the user input.
                 },
                 decoration: kInputDecoration.copyWith(
@@ -72,8 +78,28 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     
               RoundedButton(
                 Colors.blueAccent,
-                () {
+                () async {
+
+                  try{
+             
+                      final user = await _auth.createUserWithEmailAndPassword(
+                      email: eMail,
+                      password: password
+                    );
+
+                    
+
+                    log(user.additionalUserInfo.toString());
+                    log(user.credential.toString());
+                    log(user.credential.toString());
+                    
+                  }
+                  catch(e){
+                    log(e.toString());
+                  }
                   //Implement registration functionality.
+                  
+                  
                   
                 },
     
