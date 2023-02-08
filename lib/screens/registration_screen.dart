@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat_app/components/rounded_button.dart';
 import 'package:firebase_chat_app/constants.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +23,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Hero(
+            const Hero(
               tag: "logo",
               child: SizedBox(
                 height: 200.0,
@@ -34,6 +36,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 48.0,
             ),
             TextField(
+              style: const TextStyle(
+                color: Colors.black
+              ),
+              textAlign: TextAlign.center,
               onChanged: (value) {
                 //Do something with the user input.
               },
@@ -45,6 +51,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 8.0,
             ),
             TextField(
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.black
+              ),
+              obscureText: true,
               onChanged: (value) {
                 //Do something with the user input.
               },
@@ -60,6 +71,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               Colors.blueAccent,
               () {
                 //Implement registration functionality.
+                
               },
 
               const Text("Register"),

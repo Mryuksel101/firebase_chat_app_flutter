@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Expanded(
+              const Expanded(
                 child: Hero(
                   tag: "logo",
                   child: Image(
@@ -36,6 +36,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 28.0,
               ),
               TextField(
+                style: const TextStyle(
+                  color: Colors.black
+                ),
+                textAlign: TextAlign.center,
                 onChanged: (value) {
                   //Do something with the user input.
                 },
@@ -47,6 +51,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 8.0,
               ),
               TextField(
+                style: const TextStyle(
+                  color: Colors.black
+                ),
+                textAlign: TextAlign.center,
                 onChanged: (value) {
                   //Do something with the user input.
                 },
