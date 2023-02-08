@@ -1,5 +1,9 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat_app/components/rounded_button.dart';
 import 'package:firebase_chat_app/constants.dart';
+import 'package:firebase_chat_app/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -11,6 +15,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _auth = FirebaseAuth.instance;
+  String eMail = "";
+  String password = "";
   
   @override
   Widget build(BuildContext context) {
@@ -41,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 textAlign: TextAlign.center,
                 onChanged: (value) {
+                  eMail = value;
                   //Do something with the user input.
                 },
                 decoration: kInputDecoration.copyWith(
@@ -56,6 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 textAlign: TextAlign.center,
                 onChanged: (value) {
+                  password = value;
                   //Do something with the user input.
                 },
                 decoration: kInputDecoration.copyWith(
@@ -67,8 +76,24 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               RoundedButton(
                 Colors.lightBlueAccent,
-                () {
+                () async {
+                  try{
+                    await _auth.signInWithEmailAndPassword(
+                      email: eMail,
+                      password: password
+                    ).then(
+                      (value) => Navigator.pushNamed(
+                         context,
+                         ChatScreen.id,
+                        ),
+                    );
+                  }
+
+                  catch(e){
+                    log(e.toString());
+                  }
                   //Implement login functionality.
+                  
                 },
                 const Text(
                   'Log In',
