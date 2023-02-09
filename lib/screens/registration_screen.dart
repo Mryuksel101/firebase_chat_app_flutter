@@ -40,17 +40,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
               ),
 
-              showSpinner? Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 153
-                ),
-                
-                height: 40,
-                width: 20,
-                child: const CircularProgressIndicator(
-                  color: Color(0xffFBC303),
-                )
-              ): const SizedBox(),
+              showSpinner? const CustomSpinner(): const SizedBox(),
 
               const Spacer(),
               TextField(
@@ -130,3 +120,5 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 }
+
+

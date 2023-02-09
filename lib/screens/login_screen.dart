@@ -15,6 +15,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool showSpinner = false;
   final _auth = FirebaseAuth.instance;
   String eMail = "";
   String password = "";
@@ -32,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               const Expanded(
+                flex: 6,
                 child: Hero(
                   tag: "logo",
                   child: Image(
@@ -39,9 +41,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   )
                 ),
               ),
-              const SizedBox(
-                height: 28.0,
-              ),
+
+              showSpinner? const CustomSpinner(): const SizedBox(),
+
+              const Spacer(),
+              
               TextField(
                 style: const TextStyle(
                   color: Colors.black
@@ -55,9 +59,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   hintText: "Enter your e mail",
                 ),
               ),
+              
               const SizedBox(
                 height: 8.0,
               ),
+
+              
               TextField(
                 style: const TextStyle(
                   color: Colors.black
@@ -71,13 +78,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   hintText: "Enter your password"
                 ),
               ),
-              const SizedBox(
-                height: 24.0,
-              ),
+              
+               
+
               RoundedButton(
                 Colors.lightBlueAccent,
                 () async {
                   try{
+                    showSpinner = true;
+                    setState(() {
+                      
+                    });
                     await _auth.signInWithEmailAndPassword(
                       email: eMail,
                       password: password
@@ -90,6 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
 
                   catch(e){
+                    showSpinner = false;
                     log(e.toString());
                   }
                   //Implement login functionality.

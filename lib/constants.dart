@@ -40,4 +40,25 @@ const kInputDecoration = InputDecoration(
   ),
 );
 
+class CustomSpinner extends StatelessWidget {
+  const CustomSpinner({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 152,
+      ),
+      
+      height: 40,
+      width: 20,
+      child: const CircularProgressIndicator(
+        color: Color(0xffFBC303),
+      )
+    );
+  }
+}
+
 
