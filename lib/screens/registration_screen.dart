@@ -15,6 +15,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  bool showSpinner = false;
   String eMail = "";
   String password = "";
   final _auth = FirebaseAuth.instance;
@@ -38,17 +39,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                 ),
               ),
-              Container(
+
+              showSpinner? Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 133
+                  horizontal: 153
                 ),
                 
-                height: 80,
+                height: 40,
                 width: 20,
                 child: const CircularProgressIndicator(
                   color: Color(0xffFBC303),
                 )
-              ),
+              ): const SizedBox(),
 
               const Spacer(),
               TextField(
@@ -90,7 +92,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 () async {
 
                   try{
-             
+                      showSpinner = true;
+                      setState(() {
+                        
+                      });
                       final user = await _auth.createUserWithEmailAndPassword(
                       email: eMail,
                       password: password
@@ -103,6 +108,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     
                   }
                   catch(e){
+                    showSpinner = false;
+                    setState(() {
+                      
+                    });
                     log(e.toString());
                   }
                   //Implement registration functionality.
