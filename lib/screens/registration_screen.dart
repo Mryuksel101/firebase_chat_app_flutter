@@ -30,19 +30,27 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               const Expanded(
+                flex: 6,
                 child: Hero(
                   tag: "logo",
-                  child: SizedBox(
-                    height: 200.0,
-                    child: Image(
-                      image: AssetImage('images/logo.png'),
-                    ),
+                  child: Image(
+                    image: AssetImage('images/logo.png'),
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 48.0,
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 133
+                ),
+                
+                height: 80,
+                width: 20,
+                child: const CircularProgressIndicator(
+                  color: Color(0xffFBC303),
+                )
               ),
+
+              const Spacer(),
               TextField(
                 style: const TextStyle(
                   color: Colors.black
