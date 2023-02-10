@@ -90,8 +90,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       
                     });
                     await _auth.signInWithEmailAndPassword(
-                      email: eMail,
-                      password: password
+                      email: eMail.trim(),
+                      password: password.trim(),
                     ).then(
                       (value) => Navigator.pushNamed(
                          context,
