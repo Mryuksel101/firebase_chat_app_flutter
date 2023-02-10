@@ -16,6 +16,10 @@ class ChatScreen extends StatefulWidget {
 
 
 
+
+
+
+
 class _ChatScreenState extends State<ChatScreen> {
   late final TextEditingController _textController;
   final _auth =  FirebaseAuth.instance;
@@ -26,6 +30,25 @@ class _ChatScreenState extends State<ChatScreen> {
    log(loggedInUser!.uid.toString());
    log(loggedInUser!.email.toString());
   }
+
+  void messagesStream() async{
+     
+   await for (var element in  _firestore.collection("messages").snapshots()) {
+     for (var elementx in element.docs) {
+      log("tetiklendi");
+      log(elementx.data().toString());
+    }
+   }
+  }
+
+  void getMessages()async{
+    final mesajlar = await _firestore.collection("messages").get();
+    for (var element in mesajlar.docs) {
+      log(element.data().toString());
+    }
+  }
+
+  
 
   @override
   void initState() {
@@ -79,15 +102,18 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       //Implement send functionality.
-                      getCurrentUser();
-                      _firestore.collection("messages").add(
+                    
+                    
+                      
+                     /*  _firestore.collection("messages").add(
                         {
                           "sender": "${loggedInUser!.email}",
                           "text" : _textController.text
                         }
-                      );
+                      
+                      */
                     },
                     child: const Text(
                       'Send',

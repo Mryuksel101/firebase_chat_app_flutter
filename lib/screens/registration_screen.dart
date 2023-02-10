@@ -19,6 +19,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String eMail = "";
   String password = "";
   final _auth = FirebaseAuth.instance;
+  
   @override
   Widget build(BuildContext context) {
     return SafeArea(
