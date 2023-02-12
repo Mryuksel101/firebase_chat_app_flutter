@@ -19,34 +19,29 @@ class ChatScreen extends StatefulWidget {
 
 
 
-
+final _auth =  FirebaseAuth.instance;
+late User? loggedInUser;
 class _ChatScreenState extends State<ChatScreen> {
   late final TextEditingController _textController;
-  final _auth =  FirebaseAuth.instance;
+  
   final _firestore = FirebaseFirestore.instance;
-  late User? loggedInUser;
+  
   void getCurrentUser(){
    loggedInUser = _auth.currentUser;
    log(loggedInUser!.uid.toString());
    log(loggedInUser!.email.toString());
   }
 
-  void messagesStream() async{
-     
-   await for (var element in  _firestore.collection("messages").snapshots()) {
-     for (var elementx in element.docs) {
-      log("tetiklendi");
-      log(elementx.data().toString());
-    }
-   }
-  }
-
+ 
+  /*
   void getMessages()async{
     final mesajlar = await _firestore.collection("messages").get();
     for (var element in mesajlar.docs) {
       log(element.data().toString());
     }
   }
+
+  */
 
   
 
@@ -67,6 +62,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black12,
       appBar: AppBar(
         leading: null,
         actions: <Widget>[
@@ -85,8 +81,20 @@ class _ChatScreenState extends State<ChatScreen> {
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            StreamBuilder(
+              stream: _firestore.collection("messages").snapshots(),
+              
+              builder: (context, snapshot) {
+                
+                return Expanded(
+                  child: Mesajlar(snapshot.data!.docs),
+                );
+
+                
+              },
+            ),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -102,18 +110,19 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () async {
+                    onPressed: (){
                       //Implement send functionality.
-                    
-                    
                       
-                     /*  _firestore.collection("messages").add(
+                      
+                       _firestore.collection("messages").add(
                         {
                           "sender": "${loggedInUser!.email}",
                           "text" : _textController.text
                         }
+                      );
+
+                      _textController.clear();
                       
-                      */
                     },
                     child: const Text(
                       'Send',
@@ -126,6 +135,67 @@ class _ChatScreenState extends State<ChatScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class Mesajlar extends StatelessWidget {
+  final List snapshot;
+  const Mesajlar(this.snapshot, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    
+    return ListView.builder(
+      reverse: true,
+      padding: const EdgeInsets.all(10.0),
+      itemCount:snapshot.length,
+      itemBuilder: (context, index) {
+        String gonderen = snapshot[index].data()["sender"];
+        // şu anki mail ile firestoreden gelen stream responsnun "sender"deki mail eşleşirse benim mesajım demek oluyor
+        bool kendiMesajimMi = loggedInUser!.email == gonderen;
+        log(kendiMesajimMi.toString());
+        log("list view $index");
+        
+        
+        return Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: kendiMesajimMi? CrossAxisAlignment.start :  CrossAxisAlignment.end,
+            children: [
+              Text(
+                gonderen,
+                style: const TextStyle(
+                  color: Colors.white30
+                ),
+                ),
+              Material(
+                borderRadius: BorderRadius.only(
+                  topRight: kendiMesajimMi? const Radius.circular(30) : const Radius.circular(0) ,
+                  topLeft: kendiMesajimMi? const Radius.circular(0) :  const Radius.circular(30),
+                  bottomRight:  const Radius.circular(30),
+                  bottomLeft: const Radius.circular(30),
+                ),
+                elevation: 5,
+                color: kendiMesajimMi? Colors.lightBlueAccent : Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 9,
+                  ),
+                  child: Text(
+                    snapshot[index].data()["text"],
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: kendiMesajimMi? Colors.white : Colors.black87
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }
