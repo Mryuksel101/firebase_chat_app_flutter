@@ -84,12 +84,12 @@ class _ChatScreenState extends State<ChatScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             StreamBuilder(
-              stream: _firestore.collection("messages").snapshots(),
+              stream: _firestore.collection("messages").orderBy("date",descending: false).snapshots(),
               
               builder: (context, snapshot) {
                 
                 return Expanded(
-                  child: Mesajlar(snapshot.data!.docs),
+                  child: Mesajlar(snapshot.data!.docs.reversed.toList()),
                 );
 
                 
@@ -117,7 +117,8 @@ class _ChatScreenState extends State<ChatScreen> {
                        _firestore.collection("messages").add(
                         {
                           "sender": "${loggedInUser!.email}",
-                          "text" : _textController.text
+                          "text" : _textController.text,
+                          "date" : DateTime.now(),
                         }
                       );
 
