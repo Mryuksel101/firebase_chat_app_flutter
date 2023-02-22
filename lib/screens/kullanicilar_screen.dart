@@ -45,7 +45,11 @@ class _KullanicilarState extends State<Kullanicilar> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return UserToUserChat(snapshot.data!.docs[index].data()["kullaniciAdi"]);
+                            return UserToUserChat(
+                              friendName: snapshot.data!.docs[index].data()["kullaniciAdi"],
+                              friendUid: snapshot.data!.docs[index].data()["id"],
+                              docId: snapshot.data!.docs[index].id,
+                            );
                           },
                         )
                       );
