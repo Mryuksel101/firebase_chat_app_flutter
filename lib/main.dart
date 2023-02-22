@@ -1,4 +1,5 @@
 import 'package:firebase_chat_app/screens/chat_screen.dart';
+import 'package:firebase_chat_app/screens/chat_screen_user_to_user.dart';
 import 'package:firebase_chat_app/screens/kullanicilar_screen.dart';
 import 'package:firebase_chat_app/screens/login_screen.dart';
 import 'package:firebase_chat_app/screens/registration_screen.dart';
@@ -41,6 +42,7 @@ class FlashChat extends StatelessWidget {
         RegistrationScreen.id :(context) => const RegistrationScreen(),
         WelcomeScreen.id : (context) => const WelcomeScreen(),
         Kullanicilar.id :(context) => const Kullanicilar(),
+        
       },
   
     );
