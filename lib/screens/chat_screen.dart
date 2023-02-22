@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat_app/constants.dart';
+import 'package:firebase_chat_app/screens/kullanicilar_screen.dart';
 import 'package:flutter/material.dart';
 
 
@@ -67,6 +68,17 @@ class _ChatScreenState extends State<ChatScreen> {
         leading: null,
         actions: <Widget>[
           IconButton(
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                Kullanicilar.id,
+              );
+            },
+            icon: const Icon(
+              Icons.supervised_user_circle_rounded,
+            )
+          ),
+          IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
                 //Implement logout functionality
@@ -88,9 +100,15 @@ class _ChatScreenState extends State<ChatScreen> {
               
               builder: (context, snapshot) {
                 
-                return Expanded(
-                  child: Mesajlar(snapshot.data!.docs.reversed.toList()),
-                );
+                if(snapshot.hasData){
+                  return Expanded(
+                    child: Mesajlar(snapshot.data!.docs.reversed.toList()),
+                  );
+                }
+
+                else{
+                  return Text("hata oldu");
+                }
 
                 
               },
