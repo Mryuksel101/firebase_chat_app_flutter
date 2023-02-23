@@ -31,6 +31,7 @@ class _ChatScreenState extends State<ChatScreen> {
    loggedInUser = _auth.currentUser;
    log(loggedInUser!.uid.toString());
    log(loggedInUser!.email.toString());
+   log(loggedInUser!.displayName.toString());
   }
 
  
