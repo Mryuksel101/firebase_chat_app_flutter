@@ -1,6 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:firebase_chat_app/screens/login_screen.dart';
-import 'package:firebase_chat_app/screens/registration_screen.dart';
+import '../../lib2/screens/login_screen.dart';
+import '../../lib2/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../components/rounded_button.dart';

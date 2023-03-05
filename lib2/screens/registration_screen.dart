@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_chat_app/components/rounded_button.dart';
-import 'package:firebase_chat_app/constants.dart';
-import 'package:firebase_chat_app/screens/chat_screen.dart';
+import '../../lib2/components/rounded_button.dart';
+import '../../lib2/constants.dart';
+import '../../lib2/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationScreen extends StatefulWidget {

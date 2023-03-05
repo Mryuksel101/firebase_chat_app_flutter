@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_chat_app/constants.dart';
-import 'package:firebase_chat_app/screens/kullanicilar_screen.dart';
+import '../../lib2/constants.dart';
+import '../../lib2/screens/kullanicilar_screen.dart';
 import 'package:flutter/material.dart';
 
 

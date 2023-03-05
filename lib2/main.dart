@@ -1,9 +1,9 @@
-import 'package:firebase_chat_app/screens/chat_screen.dart';
-import 'package:firebase_chat_app/screens/chat_screen_user_to_user.dart';
-import 'package:firebase_chat_app/screens/kullanicilar_screen.dart';
-import 'package:firebase_chat_app/screens/login_screen.dart';
-import 'package:firebase_chat_app/screens/registration_screen.dart';
-import 'package:firebase_chat_app/screens/welcome_screen.dart';
+import '../lib2/screens/chat_screen.dart';
+import '../lib2/screens/chat_screen_user_to_user.dart';
+import '../lib2/screens/kullanicilar_screen.dart';
+import '../lib2/screens/login_screen.dart';
+import '../lib2/screens/registration_screen.dart';
+import '../lib2/screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
