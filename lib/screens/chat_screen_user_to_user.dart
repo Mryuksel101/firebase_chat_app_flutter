@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 // mesaj göndermek istedğin kullanıcnın username'ini al 2)
 // chat id yi belirle ve onu değişkene at 3)
 // chat room daha önce oluşturulmuş mu diye bak 4)
+// mesaj gönderme işlemleri
 class UserToUserChat extends StatefulWidget {
   static String id = "user_to_user_chat";
   String docId;
@@ -22,6 +23,7 @@ class UserToUserChat extends StatefulWidget {
 class _UserToUserChatState extends State<UserToUserChat> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
+  late final TextEditingController customTextEdittibgController;
   String chatId = "";
   // 1)
   String girisYapanUid(){ 
@@ -29,6 +31,17 @@ class _UserToUserChatState extends State<UserToUserChat> {
     log("girisYapanUserName: ${user!.displayName.toString()}");
     log("girisYapanUserName: ${user.email.toString()}");
     return user.uid;
+  }
+
+  void mesajGonder(){
+    _firestore.collection("chatrooms").doc(chatId).collection("chats").add(
+      {
+        "message" : customTextEdittibgController.text,
+        "sendBy" : "josef",
+      }
+    );
+
+    customTextEdittibgController.clear();
   }
 
   String chatIdOlustur(String aPerson, bPerson){
@@ -52,7 +65,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
    }
 
    else{
-     log("chat odası ilk defa oluşturuluyor... chat id: $chatId");
+    log("chat odası ilk defa oluşturuluyor... chat id: $chatId");
     _firestore.collection("chatrooms").doc(chatId).set(
       {
         "kullanici1:" : "deneme1",
@@ -64,6 +77,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
   
   @override
   void initState() {
+    customTextEdittibgController = TextEditingController();
     chatId = chatIdOlustur(girisYapanUid(), widget.friendUid);
     chatRoomControl();
     log(widget.friendUid.toString());
@@ -89,7 +103,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
                 itemCount:snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   return Text(
-                    "aaa",
+                    snapshot.data!.docs[index].data()["message"],
                     style: TextStyle(
                       color: Colors.white
                     ),
@@ -101,8 +115,23 @@ class _UserToUserChatState extends State<UserToUserChat> {
 
           Align(
             alignment: Alignment.bottomCenter,
-            child: TextField(
-              decoration: InputDecoration.collapsed(hintText: "yaz"),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    
+                    controller: customTextEdittibgController,
+                    decoration: InputDecoration.collapsed(hintText: "yaz"),
+                  ),
+                ),
+
+                TextButton(
+                  onPressed: () {
+                    mesajGonder();
+                  },
+                  child: Text("gonder"),
+                )
+              ],
             ),
           ),
         ],
