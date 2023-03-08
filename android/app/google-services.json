@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "593080222225-gtm8qksmgnt1pppa8dp89obe0u7kgtmc.apps.googleusercontent.com",
+          "client_id": "593080222225-4fthl3cdcaejkmk9ire0vfpot26sc50s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mryuksel.firebase_chat_app",
+            "certificate_hash": "55a425e0a4a5a51c93b96b7641bb38cadc758065"
+          }
+        },
+        {
+          "client_id": "593080222225-anmrk32db81eb8q82m2r8e2adqi4iik9.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +35,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "593080222225-gtm8qksmgnt1pppa8dp89obe0u7kgtmc.apps.googleusercontent.com",
+              "client_id": "593080222225-anmrk32db81eb8q82m2r8e2adqi4iik9.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
