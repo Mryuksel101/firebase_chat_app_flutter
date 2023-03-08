@@ -1,4 +1,3 @@
-import 'package:firebase_chat_app/auth_islemleri/view/view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +18,7 @@ class Myapp extends StatelessWidget {
         useMaterial3: true,
       ),
 
-      home: const GirisYap(),
+      //home: const GirisYap(),
     );
   }
 }
