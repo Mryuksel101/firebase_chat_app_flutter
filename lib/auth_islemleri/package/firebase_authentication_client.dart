@@ -1,5 +1,9 @@
+
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_chat_app/auth_islemleri/package/token_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'authentication__user.dart';
@@ -11,15 +15,15 @@ import 'authentication_client.dart';
 /// {@template firebase_authentication_client}
 /// A Firebase implementation of the [AuthenticationClient] interface.
 /// {@endtemplate}
-class FirebaseAuthenticationClient implements AuthenticationClient {
+class FirebaseAuthenticationClient{
   
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
 
-  final TokenStorage _tokenStorage;
+  final InMemoryTokenStorage _tokenStorage;
 
   FirebaseAuthenticationClient({
-      required TokenStorage tokenStorage,
+      required InMemoryTokenStorage tokenStorage,
       firebase_auth.FirebaseAuth? firebaseAuth,
       GoogleSignIn? googleSignIn,
 
@@ -51,6 +55,7 @@ class FirebaseAuthenticationClient implements AuthenticationClient {
   @override
   Future<void> logInWithGoogle() async {
     try {
+      log("logInWithGoogle fonksiyonu başladı");
       final googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
         throw const LogInWithGoogleCanceled(
@@ -58,6 +63,8 @@ class FirebaseAuthenticationClient implements AuthenticationClient {
         );
       }
       final googleAuth = await googleUser.authentication;
+
+      log(googleUser.email);
       final credential = firebase_auth.GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -65,8 +72,9 @@ class FirebaseAuthenticationClient implements AuthenticationClient {
       await _firebaseAuth.signInWithCredential(credential);
     } on LogInWithGoogleCanceled {
       rethrow;
-    } catch (error, stackTrace) {
-     // Error.throwWithStackTrace(LogInWithGoogleFailure(error), stackTrace);
+    } catch(e){
+      log("logInWithGoogle hatasi: $e");
+
     }
   }
 
@@ -82,7 +90,8 @@ class FirebaseAuthenticationClient implements AuthenticationClient {
         _firebaseAuth.signOut(),
         _googleSignIn.signOut(),
       ]);
-    } catch (error, stackTrace) {
+    } catch (e) {
+      log(e.toString());
      // Error.throwWithStackTrace(LogOutFailure(error), stackTrace);
     }
   }

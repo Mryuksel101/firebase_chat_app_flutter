@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
+
 
 import '../package/authentication_client.dart';
 import '../package/user_repository.dart';
@@ -11,6 +14,27 @@ class LoginBloc extends Bloc<LoginEvent, LoginState>{
     _userRepository = userRepository,
     super(LoginState()){
     on<LoginGoogleSubmitted>(_onGoogleSubmitted);
+    on<LogOut>(_logOut);
+  }
+
+
+  
+
+  Future<void> _logOut(LogOut logOut, Emitter emit) async{
+    emit(
+      state.copyWith(status: Status.inProgress),
+    );
+
+    try{
+      log("log out başladi");
+      await _userRepository.logOut();
+      log("bitti");
+    }
+
+
+    catch(e){
+      log("hata var ama ne: $e");
+    }
   }
 
 
@@ -21,16 +45,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState>{
 
     try{
       await _userRepository.logInWithGoogle();
+      log("bitti");
     }
 
     on LogInWithGoogleCanceled{
-      
+      log("LogInWithGoogleCanceled");
     }
 
 
 
     catch(e){
-
+      log("hata var ama ne: $e");
     }
   }
+
+  
+
+
+
 }

@@ -6,3 +6,7 @@ class LoginGoogleSubmitted extends LoginEvent{
   LoginGoogleSubmitted();
 }
 
+class LogOut extends LoginEvent{
+  LogOut();
+}
+

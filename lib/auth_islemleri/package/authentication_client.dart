@@ -16,13 +16,3 @@ class LogInWithGoogleCanceled{
   const LogInWithGoogleCanceled();
 }
 
-
-/// A generic Authentication Client Interface.
-abstract class AuthenticationClient{
-  
-  AuthenticationClient();
-
-
-  /// Throws a [LogInWithGoogleFailure] if an exception occurs.
-  Future<void> logInWithGoogle();
-}
