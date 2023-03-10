@@ -1,3 +1,5 @@
+import 'package:firebase_chat_app/register/register_page.dart';
+import 'package:firebase_chat_app/register/register_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +23,7 @@ class Myapp extends StatelessWidget {
         useMaterial3: true,
       ),
 
-      home:  const BlocPage(),
+      home:  const RegisterPage(),
     );
   }
 }
