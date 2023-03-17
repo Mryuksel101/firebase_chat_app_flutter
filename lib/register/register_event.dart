@@ -25,3 +25,13 @@ class KayitOlEvent extends RegisterEvent{
   @override
   List<Object?> get props => [email,sifre,ad,soyAd];
 }
+
+class KayitOlEvenGoogle extends RegisterEvent{
+  @override
+  List<Object?> get props =>[];
+
+}
+
+class EventCikisyap extends RegisterEvent{
+  List<Object?> get props =>[];
+}

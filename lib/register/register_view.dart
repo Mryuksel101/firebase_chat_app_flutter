@@ -6,108 +6,152 @@ import 'package:firebase_chat_app/register/register_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RegisterView extends StatelessWidget {
+class RegisterView extends StatefulWidget {
   
   const RegisterView({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  State<RegisterView> createState() => _RegisterViewState();
+
+}
+
+class _RegisterViewState extends State<RegisterView> {
     final TextEditingController ctrAd = TextEditingController();
     final TextEditingController ctrSoyAd = TextEditingController();
     final TextEditingController ctrsifre = TextEditingController();
     final TextEditingController ctrMail = TextEditingController();
+    final _formKey = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
+
     final bloc = context.read<RegisterBloc>();
     
-    final _formKey = GlobalKey<FormState>();
+    
     return Scaffold(
       body:  Padding(
         padding: const EdgeInsets.all(20),
         child: Form(
-          
+          autovalidateMode: AutovalidateMode.disabled,
           key: _formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: BlocBuilder<RegisterBloc, RegisterState>(
-            
-            builder: (context, state) {
-              log("bloc builder calişti");
-              return Column(
-                children: [
-                  TextFormField(
-                    controller: ctrAd,
-                    validator: (value) {
+          
+        child: Column(
+              children: [
 
-                    },
-                    decoration: const InputDecoration(
-                      hintText: "adınızı girin"
-                    ),
+                
+                TextFormField(
+                  controller: ctrAd,
+                  validator: (value) {
+
+                  },
+                  decoration: const InputDecoration(
+                    hintText: "adınızı girin"
                   ),
-            
-                  TextFormField(
-                    controller: ctrSoyAd,
-                    validator: (value) {
+                ),
+          
+                TextFormField(
+                  controller: ctrSoyAd,
+                  validator: (value) {
 
-                    },    
-                    decoration: const InputDecoration(
-                      hintText: "soy adınızı girin",
-                    ),
+                  },    
+                  decoration: const InputDecoration(
+                    hintText: "soy adınızı girin",
                   ),
-            
-                  TextFormField(
-                    controller: ctrMail,
-                    decoration: const InputDecoration(
-                      hintText: "mail adresinizi girin",
+                ),
+          
+                BlocBuilder<RegisterBloc, RegisterState>(
 
-                    ),
+                  builder: (context, state) {
                     
-                    validator: (value) {
-                     if(value!.isNotEmpty){
-                       log(value.toString());
-                      // event tanımla
-                      // eventten bloca gitsin
-                      // buradan dinle
-                      bloc.add(RegisterEmailChanged(email: value.toString()));
-                      if(state.emailHataMesaji!.isEmpty){
-                        return null;
-                      }
+                    log("bloc builder calişti");
+                      return TextFormField(
+                      
+                      controller: ctrMail,
+                      decoration: const InputDecoration(
+                        hintText: "mail adresinizi girin",
+                  
+                      ),
 
-                      else{
-                        return state.emailHataMesaji;
-                      }
-                     }
-                    },
+                      onChanged: (value) {
+                        bloc.add(RegisterEmailChanged(email: value.toString()));
+                      },
+                      
+                      validator: (value) {
+                        if(value!.isNotEmpty){
+                          log("validator ın içindeyim");
+                          // event tanımla
+                          // eventten bloca gitsin
+                          // buradan dinle
+                          
+                          if(state.emailHataMesaji!.isEmpty){
+                            log("ifdeyiz");
+                            return null;
+                          }
+                  
+                          else{
+                            log("elsedeyiz");
+                            return state.emailHataMesaji;
+                          }
+                        }
+                      },
+                    );
+                  },
+                  
+                ),
+
+                TextFormField(
+                  controller: ctrsifre,
+                  decoration: const InputDecoration(
+                    hintText: "şifrenizi girin",
+
                   ),
 
-                  TextFormField(
-                    controller: ctrsifre,
-                    decoration: const InputDecoration(
-                      hintText: "şifrenizi girin",
+                  validator: (value) {
+                
+                  },
+                ),
 
-                    ),
-
-                    validator: (value) {
-                  
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                  TextButton(
+                    onPressed: () {
+                      if(_formKey.currentState!.validate()){
+                      log("doğrulandi");
+                        bloc.add(
+                          KayitOlEvent(
+                            ad: ctrAd.text,
+                            soyAd: ctrSoyAd.text,
+                            email: ctrMail.text,
+                            sifre: ctrsifre.text
+                          )
+                        );  
+                      }
+                      
                     },
+                    child: Text("giriş yap"),
                   ),
 
                   TextButton(
                     onPressed: () {
-                      bloc.add(
-                        KayitOlEvent(
-                          ad: ctrAd.text,
-                          soyAd: ctrSoyAd.text,
-                          email: ctrMail.text,
-                          sifre: ctrsifre.text
-                        )
-                      );
+                      bloc.add(KayitOlEvenGoogle());
                     },
-                    child: Text("giriş yap"),
+                    child: Text("google ile kayıt ol")
                   ),
-            
+
+                  TextButton(
+                    onPressed: () {
+                      bloc.add(EventCikisyap());
+                    },
+                    child: Text("cikiş yap")
+                  ),
                 ],
-              );
-            },
-            
-          ),
+              ),
+
+             
+          
+            ],
+          )
+         
           
         ),
       ),
