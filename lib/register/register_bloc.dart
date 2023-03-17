@@ -1,14 +1,16 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_chat_app/ana_sayfa/ana_sayfa_view.dart';
 
 
 import 'package:firebase_chat_app/register/register_event.dart';
 import 'package:firebase_chat_app/register/register_state.dart';
 import 'package:firebase_chat_app/register/register_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -22,7 +24,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
   ){
     on<RegisterEmailChanged>(_registerEmailChanged);
     on<KayitOlEvent>(_kayitOlEvent);
-    on<KayitOlEvenGoogle>(_kayitOlEventGoogle);
+    on<EventKayitOlGoogle>(_kayitOlEventGoogle);
     on<EventCikisyap>(_eventCikisYap);
   }
 
@@ -34,7 +36,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
       builder: (BuildContext context) => AlertDialog(
 
         elevation: 24,
-        insetPadding: EdgeInsets.symmetric(
+        insetPadding: const EdgeInsets.symmetric(
           horizontal: 30,
           vertical: 60
         ),
@@ -79,18 +81,29 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
   }
 
   /// bu fonksiyon e-mail ve şifre yazılarak menuel olarak yeni kayıt oluşturmaktan sorumludur
+  /// kullanıcı başarılı bir şekilde kayıt olduktan sonra ana sayfaya routing (yönlendirme) işlemi yapar   
   void _kayitOlEvent(KayitOlEvent kayitOlEvent, Emitter<RegisterState> emit)async{
     try{
-      final UserCredential _userCredential = await auth.createUserWithEmailAndPassword(
-        email: kayitOlEvent.email,
-        password: kayitOlEvent.sifre
+      final UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+        email: kayitOlEvent.email.trim(),
+        password: kayitOlEvent.sifre.trim()
       );
 
-      _firestore.collection("user").doc(_userCredential.user!.uid).set(
+      _firestore.collection("user").doc(userCredential.user!.uid).set(
         {
           "ad" : "${kayitOlEvent.ad} ${kayitOlEvent.soyAd}",
           "email" : kayitOlEvent.email,
         }
+      );
+
+      // Navigator.pushReplacement yöntemi, bir sayfayı geçerli sayfanın yerine kapatmak için kullanılır.
+      // Bu, örneğin bir giriş sayfasından ana sayfaya geçiş yapmak için kullanışlıdır.
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacement(
+        kayitOlEvent.buildContext,
+        MaterialPageRoute(
+          builder: (context) => const AnaSayfaView(),
+        ),
       );
 
     }
@@ -103,7 +116,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
     }
   }
 
-  void _kayitOlEventGoogle(KayitOlEvenGoogle kayitOlEvenGoogle, Emitter<RegisterState> emit)async{
+
+  /// bu fonksiyon google ile giriş ile otomatik olarak yeni kayıt oluşturmaktan sorumludur
+  /// kullanıcı başarılı bir şekilde kayıt olduktan sonra ana sayfaya routing (yönlendirme) işlemi yapar   
+  void _kayitOlEventGoogle(EventKayitOlGoogle eventKayitOlGoogle, Emitter<RegisterState> emit)async{
     try{
      
       final googleUser = await _googleSignIn.signIn();
@@ -123,6 +139,13 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
         }
       );
 
+      Navigator.pushReplacement(
+        eventKayitOlGoogle.buildContext,
+        MaterialPageRoute(
+          builder: (context) => const AnaSayfaView(),
+        ),
+      );
+
       log(googleUser.email);
     }
 
@@ -134,7 +157,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
 
   
 
-
+  /// bu fonksiyon hesaplardan çıkış yapar ve giriş sayfasına routing (yönlendirme) işlemi yapar.
   void _eventCikisYap(EventCikisyap eventCikisyap, Emitter emit){
     log("${auth.currentUser!.email} çıkış yapılan email");
     try{

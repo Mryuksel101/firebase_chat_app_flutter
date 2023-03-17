@@ -27,14 +27,17 @@ class KayitOlEvent extends RegisterEvent{
   List<Object?> get props => [email,sifre,ad,soyAd,buildContext];
 }
 
-class KayitOlEvenGoogle extends RegisterEvent{
+class EventKayitOlGoogle extends RegisterEvent{
+  final BuildContext buildContext;
+  const EventKayitOlGoogle(this.buildContext);
   @override
-  List<Object?> get props =>[];
+  List<Object?> get props =>[buildContext];
 
 }
 
 class EventCikisyap extends RegisterEvent{
-  BuildContext buildContext;
-  EventCikisyap(this.buildContext);
+  final BuildContext buildContext;
+  const EventCikisyap(this.buildContext);
+  @override
   List<Object?> get props =>[buildContext];
 }

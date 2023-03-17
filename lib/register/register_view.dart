@@ -134,7 +134,7 @@ class _RegisterViewState extends State<RegisterView> {
 
                   TextButton(
                     onPressed: () {
-                      bloc.add(KayitOlEvenGoogle());
+                      bloc.add(EventKayitOlGoogle(context));
                     },
                     child: Text("google ile kayıt ol")
                   ),
