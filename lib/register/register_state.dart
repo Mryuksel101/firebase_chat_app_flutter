@@ -1,4 +1,16 @@
+
+
 class RegisterState{
-  String metin;
-  RegisterState({required this.metin});
+  String? emailHataMesaji;
+  String? sifreHataMesaji;
+
+  RegisterState({required this.emailHataMesaji, required this.sifreHataMesaji});
+
+  RegisterState copyWith({String? email, String? sifre }){
+    return RegisterState(
+      emailHataMesaji: email,
+      sifreHataMesaji: sifre
+    );
+  }
+  
 }

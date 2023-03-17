@@ -116,7 +116,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             Container(
               decoration: kMessageContainerDecoration,
-              child: Row(
+              child: Row( 
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Expanded(
