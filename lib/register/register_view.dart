@@ -122,7 +122,8 @@ class _RegisterViewState extends State<RegisterView> {
                             ad: ctrAd.text,
                             soyAd: ctrSoyAd.text,
                             email: ctrMail.text,
-                            sifre: ctrsifre.text
+                            sifre: ctrsifre.text,
+                            buildContext: context,
                           )
                         );  
                       }

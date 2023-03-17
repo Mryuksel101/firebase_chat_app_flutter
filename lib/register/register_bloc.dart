@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firebase_chat_app/register/register_event.dart';
 import 'package:firebase_chat_app/register/register_state.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -23,9 +25,24 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
     on<EventCikisyap>(_eventCikisYap);
   }
 
+  
+  
+  void uyariMesaji(BuildContext context, String hataMesaji){
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Kayıt olma başarısız'),
+        content: Text(hataMesaji),
+        actions: <Widget>[
 
-
-
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'OK'),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
 
   void _registerEmailChanged(RegisterEmailChanged registerEmailChanged, Emitter emit){
     final RegExp emailRegExp = 
@@ -43,7 +60,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
 
     else{
       
-
       log("invaild e mail: ${registerEmailChanged.email}");
       hataMesaji = "geçersiz e-mail";
       emit(
@@ -54,6 +70,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
     }
   }
 
+  /// bu fonksiyon e-mail ve şifre yazılarak menuel olarak yeni kayıt oluşturmaktan sorumludur
   void _kayitOlEvent(KayitOlEvent kayitOlEvent, Emitter<RegisterState> emit)async{
     try{
       final UserCredential _userCredential = await _auth.createUserWithEmailAndPassword(
@@ -75,6 +92,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
     }
 
     catch(e){
+      if(e.toString()=="[firebase_auth/email-already-in-use] The email address is already in use by another account."){
+        uyariMesaji(kayitOlEvent.buildContext, "The email address is already in use by another account.");
+      }
       log("_kayitOlEvent'de hata var ${e.toString()}");
     }
   }
@@ -83,9 +103,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
     try{
      
       final googleUser = await _googleSignIn.signIn();
-
       GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
-
+      
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -104,6 +123,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
     }
 
     catch(e){
+
       log("hata $e");
     }
   }
@@ -112,6 +132,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
 
 
   void _eventCikisYap(EventCikisyap eventCikisyap, Emitter emit){
+    log("${_auth.currentUser!.displayName} çıkış yapılan isim");
     try{
       _auth.signOut();
       _googleSignIn.signOut();

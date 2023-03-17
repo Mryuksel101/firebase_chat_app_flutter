@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 
 abstract class RegisterEvent extends Equatable{
   const RegisterEvent();
@@ -19,11 +20,11 @@ class KayitOlEvent extends RegisterEvent{
   final String sifre;
   final String ad;
   final String soyAd;
-
-  const KayitOlEvent({required this.ad, required this.soyAd, required this.email, required this.sifre});
+  final BuildContext buildContext;
+  const KayitOlEvent({required this.ad, required this.soyAd, required this.email, required this.sifre, required this.buildContext });
 
   @override
-  List<Object?> get props => [email,sifre,ad,soyAd];
+  List<Object?> get props => [email,sifre,ad,soyAd,buildContext];
 }
 
 class KayitOlEvenGoogle extends RegisterEvent{
