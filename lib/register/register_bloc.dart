@@ -6,13 +6,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firebase_chat_app/register/register_event.dart';
 import 'package:firebase_chat_app/register/register_state.dart';
+import 'package:firebase_chat_app/register/register_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn.standard();
   
@@ -31,6 +32,13 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
+
+        elevation: 24,
+        insetPadding: EdgeInsets.symmetric(
+          horizontal: 30,
+          vertical: 60
+        ),
+        alignment:Alignment.center,
         title: const Text('Kayıt olma başarısız'),
         content: Text(hataMesaji),
         actions: <Widget>[
@@ -73,22 +81,18 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
   /// bu fonksiyon e-mail ve şifre yazılarak menuel olarak yeni kayıt oluşturmaktan sorumludur
   void _kayitOlEvent(KayitOlEvent kayitOlEvent, Emitter<RegisterState> emit)async{
     try{
-      final UserCredential _userCredential = await _auth.createUserWithEmailAndPassword(
+      final UserCredential _userCredential = await auth.createUserWithEmailAndPassword(
         email: kayitOlEvent.email,
         password: kayitOlEvent.sifre
       );
 
       _firestore.collection("user").doc(_userCredential.user!.uid).set(
         {
-          "ad" : kayitOlEvent.ad,
-          "soy_ad" : kayitOlEvent.soyAd,
+          "ad" : "${kayitOlEvent.ad} ${kayitOlEvent.soyAd}",
           "email" : kayitOlEvent.email,
         }
       );
 
-
-
-      
     }
 
     catch(e){
@@ -109,7 +113,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      await _auth.signInWithCredential(credential);
+      await auth.signInWithCredential(credential);
       
       _firestore.collection("user").doc(googleUser.id).set(
         {
@@ -132,10 +136,20 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
 
 
   void _eventCikisYap(EventCikisyap eventCikisyap, Emitter emit){
-    log("${_auth.currentUser!.displayName} çıkış yapılan isim");
+    log("${auth.currentUser!.email} çıkış yapılan email");
     try{
-      _auth.signOut();
+      auth.signOut();
       _googleSignIn.signOut();
+
+      Navigator.pushAndRemoveUntil(
+        eventCikisyap.buildContext,
+        MaterialPageRoute(
+          builder: (context) {
+            return const RegisterView();
+          },
+        ),
+        (route) => false,
+      );
     }
 
     catch(e){

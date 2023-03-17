@@ -141,7 +141,7 @@ class _RegisterViewState extends State<RegisterView> {
 
                   TextButton(
                     onPressed: () {
-                      bloc.add(EventCikisyap());
+                      bloc.add(EventCikisyap(context));
                     },
                     child: Text("cikiş yap")
                   ),

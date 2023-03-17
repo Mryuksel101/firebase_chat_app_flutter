@@ -34,5 +34,7 @@ class KayitOlEvenGoogle extends RegisterEvent{
 }
 
 class EventCikisyap extends RegisterEvent{
-  List<Object?> get props =>[];
+  BuildContext buildContext;
+  EventCikisyap(this.buildContext);
+  List<Object?> get props =>[buildContext];
 }
