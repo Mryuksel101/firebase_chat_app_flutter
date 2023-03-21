@@ -26,7 +26,7 @@ class Myapp extends StatelessWidget {
             useMaterial3: true,
         ),
         
-        home: const AnaSayfaView(),
+        home: const ,
     );
   }
 }
