@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../widget/sayfa_gecisi.dart';
+
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -141,9 +143,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
 
       Navigator.pushReplacement(
         eventKayitOlGoogle.buildContext,
-        MaterialPageRoute(
-          builder: (context) => const AnaSayfaView(),
-        ),
+        createRoute(sayfa: const AnaSayfaView())
       );
 
       log(googleUser.email);
@@ -166,11 +166,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
 
       Navigator.pushAndRemoveUntil(
         eventCikisyap.buildContext,
-        MaterialPageRoute(
-          builder: (context) {
-            return const RegisterView();
-          },
-        ),
+        geri(sayfa: const RegisterView()),
         (route) => false,
       );
     }
