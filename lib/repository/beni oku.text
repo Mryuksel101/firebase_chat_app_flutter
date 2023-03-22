@@ -1,9 +1,0 @@
-"authentication_repository.dart" dosyası, Flutter Bloc mimarisinde "repository" adı verilen bir klasörde bulunmalıdır.
-
-Bu klasör, uygulamanın veri kaynaklarına erişimini yönetmek için kullanılan sınıfları içerir
-ve bu sınıflar genellikle bir veritabanı veya bir API ile etkileşime geçer. "authentication_repository.dart" dosyası,
-kullanıcı kimlik doğrulama işlemleri ile ilgili veri işlemlerini yönetmek için kullanılan bir sınıf içerdiği için "repository" klasöründe yer almalıdır.
-
-Flutter Bloc mimarisinde, projenin farklı bileşenleri arasındaki bağımlılıklar "dependency injection" (DI) yöntemiyle yönetilir.
-Bu nedenle, "authentication_repository.dart" dosyası, "repository" klasöründe olmalı ve gerektiğinde diğer bileşenler tarafından
-çağrılabilir olmalıdır. Bu sayede, uygulamanın farklı yerlerindeki bileşenlerin doğru ve tutarlı bir şekilde çalışması sağlanır.
