@@ -35,6 +35,11 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider.value(
+      /// RepositoryProvider.value Flutter için provider paketi tarafından sağlanan bir widget'dir. 
+      /// Bu widget, bir Repository nesnesini mevcut widget ağacındaki alt widgetlere geçirir ve bir değer sağlayıcısı olarak işlev görür.
+      /// RepositoryProvider.value widget'i, bağımlılık enjeksiyonu (dependency injection) yapmak için kullanılır.
+      /// Veri deposu (repository) bir kez oluşturulur ve daha sonra bu nesne, uygulamanın farklı yerlerindeki widget'lar tarafından kullanılabilir hale getirilir.
+      /// Bu, uygulamanın daha az bellek kullanmasına ve daha düşük bağımlılıkla daha yeniden kullanılabilir bir kod oluşturmasına yardımcı olur.   
       value: _authenticationRepository,
       child: BlocProvider(
         create: (_) => AuthenticationBloc(
