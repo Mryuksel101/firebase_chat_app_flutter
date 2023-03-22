@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -19,9 +20,12 @@ class AuthenticationBloc
     on<_AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
     on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
     _authenticationStatusSubscription = _authenticationRepository.status.listen(
-      (status) => add(_AuthenticationStatusChanged(status)),
+      (status){
+        log(status.name);
+        add(_AuthenticationStatusChanged(status));
+      }
     );
-  }
+  } //_AuthenticationStatusChanged(status)
 
   final AuthenticationRepository _authenticationRepository;
   final UserRepository _userRepository;
