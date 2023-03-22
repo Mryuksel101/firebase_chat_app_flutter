@@ -86,6 +86,7 @@ class _AppViewState extends State<AppView> {
           child: child,
         );
       },
+      ///initialRoute özelliği belirtilmediğinde uygulamanın ilk sayfasına yönlendirmek için kullanılabilir.
       onGenerateRoute: (_) => SplashPage.route(),
     );
   }
