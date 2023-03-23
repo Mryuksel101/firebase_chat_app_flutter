@@ -2,6 +2,7 @@
 import 'package:firebase_chat_app/app/bloc/app_bloc.dart';
 import 'package:firebase_chat_app/app/routes/routes.dart';
 import 'package:firebase_chat_app/repository/authentication_repository/src/authentication_repository.dart';
+import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -42,8 +43,8 @@ class AppView extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: FlowBuilder<AppStatus>(
-        state: context.select((AppBloc bloc) => bloc.state.status),
+      home: FlowBuilder<AppStatus>( // uyguulamanın state değişimine göre sayfayı build eder
+        state: context.select((AppBloc bloc) => bloc.state.status), // her state değiştiğinde gezinme rotası(açılan sayfa) değişir
         onGeneratePages: onGenerateAppViewPages,
       ),
     );

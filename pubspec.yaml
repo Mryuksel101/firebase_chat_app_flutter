@@ -45,10 +45,7 @@ dependencies:
   bloc: ^8.1.1
   flutter_bloc: ^8.1.2
   equatable: ^2.0.5
-  authentication_repository:
-    path: packages/authentication_repository
-  user_repository:
-    path: packages/user_repository
+  flow_builder: ^0.0.9
 
 dev_dependencies:
   flutter_test:
