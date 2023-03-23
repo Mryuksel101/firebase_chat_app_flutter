@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:cloud_firestore/cloud_firestore.dart' as firebase_firestore;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 
@@ -157,15 +158,17 @@ class AuthenticationRepository {
   AuthenticationRepository({
     CacheClient? cache,
     firebase_auth.FirebaseAuth? firebaseAuth,
+    firebase_firestore.FirebaseFirestore? firestore,
     GoogleSignIn? googleSignIn,
   })  : _cache = cache ?? CacheClient(),
         _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
+        _googleSignIn = googleSignIn ?? GoogleSignIn.standard(),
+        _firestore = firestore ?? firebase_firestore.FirebaseFirestore.instance;
 
   final CacheClient _cache;
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
-
+  final firebase_firestore.FirebaseFirestore _firestore;
   /// Whether or not the current environment is web
   /// Should only be overriden for testing purposes. Otherwise,
   /// defaults to [kIsWeb]
@@ -204,11 +207,27 @@ class AuthenticationRepository {
         email: email,
         password: password,
       );
+
+      
+      
+
+      
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);
     } catch (_) {
       throw const SignUpWithEmailAndPasswordFailure();
     }
+  }
+
+  Future<void> addUserInfoToFirestore(String? name, String? email, String? uid)async {
+    _firestore.collection("users").doc("${uid}_${DateTime.now()}").set(
+      {
+        "name" : name,
+        "email" : email
+      }
+    );
+
+
   }
 
   /// Starts the Sign In with Google Flow.
@@ -217,7 +236,7 @@ class AuthenticationRepository {
   Future<void> logInWithGoogle() async {
     try {
       late final firebase_auth.AuthCredential credential;
-      if (isWeb) {
+      if (isWeb) { // firestore'u ekle
         final googleProvider = firebase_auth.GoogleAuthProvider();
         final userCredential = await _firebaseAuth.signInWithPopup(
           googleProvider,
@@ -230,6 +249,8 @@ class AuthenticationRepository {
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
+
+        await addUserInfoToFirestore(googleUser.displayName, googleUser.email, googleUser.id);
       }
 
       await _firebaseAuth.signInWithCredential(credential);
