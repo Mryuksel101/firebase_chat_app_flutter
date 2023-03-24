@@ -1,5 +1,6 @@
 import 'package:firebase_chat_app/login/cubit/login_cubit.dart';
 import 'package:firebase_chat_app/sign_up/view/sign_up_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -37,6 +38,8 @@ class LoginForm extends StatelessWidget {
               _GoogleLoginButton(),
               const SizedBox(height: 4),
               _SignUpButton(),
+              const SizedBox(height: 4,),
+              const _AppleIdLoginButton(),
             ],
           ),
         ),
@@ -110,6 +113,29 @@ class _LoginButton extends StatelessWidget {
                 child: const Text('LOGIN'),
               );
       },
+    );
+  }
+}
+class _AppleIdLoginButton extends StatelessWidget {
+  const _AppleIdLoginButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return ElevatedButton.icon(
+      key: const Key('loginForm_appleidLogin_raisedButton'),
+      label: const Text(
+        'SIGN IN WITH YOUR APPLE ID',
+        style: TextStyle(color: Colors.white),
+      ),
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        backgroundColor: theme.colorScheme.secondary,
+      ),
+      icon: const Icon(CupertinoIcons.arrow_up_right_square_fill, color: Colors.white),
+      onPressed: () => context.read<LoginCubit>().logInWithGoogle(),
     );
   }
 }
