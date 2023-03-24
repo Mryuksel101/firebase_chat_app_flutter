@@ -201,16 +201,31 @@ class AuthenticationRepository {
   /// Creates a new user with the provided [email] and [password].
   ///
   /// Throws a [SignUpWithEmailAndPasswordFailure] if an exception occurs.
-  Future<void> signUp({required String email, required String password}) async {
+  Future<void> signUp({required String email, required String password, required String name}) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      final firebase_auth.UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
+      firebase_auth.User? user = userCredential.user;
+
+      if (user != null) {
+        await user.updateDisplayName(name);
+        await user.reload();
+        final firebase_auth.User? currentUser =  _firebaseAuth.currentUser;
+        await addUserInfoToFirestore(currentUser!.displayName, currentUser.email, currentUser.uid);
+        log("isim: ${currentUser.displayName}");
+      }
+      
+
+      
+
+
       
       
 
+      
       
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);

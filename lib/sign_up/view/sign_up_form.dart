@@ -25,6 +25,8 @@ class SignUpForm extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const _NameInput(),
+            const SizedBox(height: 8),
             _EmailInput(),
             const SizedBox(height: 8),
             _PasswordInput(),
@@ -35,6 +37,28 @@ class SignUpForm extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _NameInput extends StatelessWidget {
+  const _NameInput({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SignUpCubit, SignUpState>(
+      buildWhen: (previous, current) => previous.name!=current.name,
+      builder: (context, state) {
+        return TextField(
+          key: const Key('signUpForm_nameInput_textField'),
+          onChanged: (text) => context.read<SignUpCubit>().nameChanged(text),
+          keyboardType: TextInputType.name,
+          decoration: const InputDecoration(
+            labelText: 'isim',
+            helperText: 'İsminizi girin',
+          ),
+        );
+      },
     );
   }
 }

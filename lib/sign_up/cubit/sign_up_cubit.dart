@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -12,11 +14,21 @@ import 'package:firebase_chat_app/repository/form_inputs/lib/password.dart';
 part 'sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
-  SignUpCubit(this._authenticationRepository) : super(const SignUpState());
+  SignUpCubit(this._authenticationRepository) : super( SignUpState());
 
   final AuthenticationRepository _authenticationRepository;
 
+  void nameChanged(String value){
+    log("name change");
+    emit(
+      state.copyWith(
+        name: value
+      )
+    );
+  }
+
   void emailChanged(String value) {
+    log("email change");
     final email = Email.dirty(value);
     emit(
       state.copyWith(
@@ -71,6 +83,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
       await _authenticationRepository.signUp(
+        name: state.name,
         email: state.email.value,
         password: state.password.value,
       );
