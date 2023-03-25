@@ -135,7 +135,7 @@ class _AppleIdLoginButton extends StatelessWidget {
         backgroundColor: theme.colorScheme.secondary,
       ),
       icon: const Icon(CupertinoIcons.arrow_up_right_square_fill, color: Colors.white),
-      onPressed: () => context.read<LoginCubit>().logInWithGoogle(),
+      onPressed: () => context.read<LoginCubit>().loginWithAppleId(),
     );
   }
 }

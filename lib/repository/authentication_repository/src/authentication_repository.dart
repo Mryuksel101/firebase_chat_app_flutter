@@ -6,9 +6,18 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:cloud_firestore/cloud_firestore.dart' as firebase_firestore;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-import '../../cache/lib/cache.dart';
+import 'package:firebase_chat_app/repository/cache/lib/cache.dart';
 import 'models/user.dart';
+
+/// Signature for [SignInWithApple.getAppleIDCredential].
+typedef GetAppleCredentials = Future<AuthorizationCredentialAppleID> Function({
+  required List<AppleIDAuthorizationScopes> scopes,
+  WebAuthenticationOptions webAuthenticationOptions,
+  String nonce,
+  String state,
+});
 
 /// {@template sign_up_with_email_and_password_failure}
 /// Thrown if during the sign up process if a failure occurs.
@@ -156,6 +165,7 @@ class LogOutFailure implements Exception {}
 class AuthenticationRepository {
   /// {@macro authentication_repository}
   AuthenticationRepository({
+    GetAppleCredentials? getAppleCredentials,
     CacheClient? cache,
     firebase_auth.FirebaseAuth? firebaseAuth,
     firebase_firestore.FirebaseFirestore? firestore,
@@ -163,8 +173,11 @@ class AuthenticationRepository {
   })  : _cache = cache ?? CacheClient(),
         _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn.standard(),
+        _getAppleCredentials = getAppleCredentials ?? SignInWithApple.getAppleIDCredential,
         _firestore = firestore ?? firebase_firestore.FirebaseFirestore.instance;
 
+
+  final GetAppleCredentials _getAppleCredentials;
   final CacheClient _cache;
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
@@ -243,6 +256,25 @@ class AuthenticationRepository {
     );
 
 
+  }
+
+  Future<void> logInWithApple() async {
+        try {
+      final appleIdCredential = await _getAppleCredentials(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+      final oAuthProvider = firebase_auth.OAuthProvider('apple.com');
+      final credential = oAuthProvider.credential(
+        idToken: appleIdCredential.identityToken,
+        accessToken: appleIdCredential.authorizationCode,
+      );
+      await _firebaseAuth.signInWithCredential(credential);
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   /// Starts the Sign In with Google Flow.
