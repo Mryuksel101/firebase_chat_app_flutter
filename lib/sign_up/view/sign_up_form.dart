@@ -9,15 +9,11 @@ class SignUpForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<SignUpCubit, SignUpState>(
-      listener: (context, state) {
+      listener: (context, state)async {
         if (state.status.isSubmissionSuccess) {
           Navigator.of(context).pop();
-        } else if (state.status.isSubmissionFailure) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(content: Text(state.errorMessage ?? 'Sign Up Failure')),
-            );
+        } else if (state.status.isSubmissionFailure){
+          await context.read<SignUpCubit>().showMyDialog(context, state.errorMessage);
         }
       },
       child: Align(
