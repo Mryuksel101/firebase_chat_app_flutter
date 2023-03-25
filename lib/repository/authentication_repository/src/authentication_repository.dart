@@ -43,7 +43,8 @@ class SignUpWithEmailAndPasswordFailure implements Exception {
         );
       case 'email-already-in-use':
         return const SignUpWithEmailAndPasswordFailure(
-          'An account already exists for that email.',
+          //'An account already exists for that email.',
+          'Bu email zaten kayıtlı',
         );
       case 'operation-not-allowed':
         return const SignUpWithEmailAndPasswordFailure(
@@ -230,15 +231,6 @@ class AuthenticationRepository {
         await addUserInfoToFirestore(currentUser!.displayName, currentUser.email, currentUser.uid);
         log("isim: ${currentUser.displayName}");
       }
-      
-
-      
-
-
-      
-      
-
-      
       
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);
