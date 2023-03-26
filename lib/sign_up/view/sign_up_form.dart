@@ -146,7 +146,9 @@ class _SignUpButton extends StatelessWidget {
                   backgroundColor: Colors.orangeAccent,
                 ),
                 onPressed: state.status.isValidated
-                    ? () => context.read<SignUpCubit>().signUpFormSubmitted()
+                    ? ()async{
+                      await context.read<SignUpCubit>().signUpFormSubmitted();
+                    }
                     : null,
                 child: const Text('SIGN UP'),
               );

@@ -200,9 +200,22 @@ class AuthenticationRepository {
   /// Emits [User.empty] if the user is not authenticated.
   Stream<User> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
-      final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
-      _cache.write(key: userCacheKey, value: user);
-      return user;
+      if(firebaseUser!=null && firebaseUser.displayName!=null){
+
+        log("tetiklendim: ${firebaseUser.email}, ${firebaseUser.displayName}");
+        final user = firebaseUser.toUser;
+        _cache.write(key: userCacheKey, value: user);
+        return user;
+      }
+
+      else{
+        log("tetiklendim. tetiklendim: ");
+        const user = User.empty;
+        _cache.write(key: userCacheKey, value: user);
+        return user;
+      }
+      
+
     });
   }
 
@@ -227,9 +240,18 @@ class AuthenticationRepository {
       if (user != null) {
         await user.updateDisplayName(name);
         await user.reload();
+        
+        log("isimimi güncelledim");
         final firebase_auth.User? currentUser =  _firebaseAuth.currentUser;
+        
         await addUserInfoToFirestore(currentUser!.displayName, currentUser.email, currentUser.uid);
         log("isim: ${currentUser.displayName}");
+        _firebaseAuth.signOut();
+        
+        /// "app" cubit'teki stream girişi kontrol ediyor.
+        await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+        
+        log("signUp tamamlandi");
       }
       
     } on firebase_auth.FirebaseAuthException catch (e) {

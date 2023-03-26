@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -20,7 +21,13 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<_AppUserChanged>(_onUserChanged);
     on<AppLogoutRequested>(_onLogoutRequested);
     _userSubscription = _authenticationRepository.user.listen(
-      (user) => add(_AppUserChanged(user)),
+      (user) {
+        
+        log("yeni user oluştu knk: ${user.name}");
+        log("yeni user oluştu knk: ${user.email}");
+        add(_AppUserChanged(user));
+      },
+      
     );
   }
 
